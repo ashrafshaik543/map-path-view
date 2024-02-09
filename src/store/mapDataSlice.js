@@ -5,7 +5,7 @@ const initialState = {
   center: [38.6013, -99.6649],
   longestDistanceFromCenter: 0,
   bounds: null,
-  zoom: 12,
+  zoom: 3.6,
   routeCoordinates: null,
 };
 
