@@ -34,13 +34,14 @@ export const calculateLongestDistanceDate = (mapData) => {
 };
 
 export const setRouteDirections = (addresses, address, actionType, geocode) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     if (actionType === "add") {
-      console.log(getState().mapData.addresses.length + 1);
-      if (getState().mapData.addresses.length + 1 < 2) return;
+      dispatch(addToList({ newAddress: address, geocode }));
+      console.log(addresses.length + 1);
+      if (addresses.length + 1 < 2) return;
 
       let searchCoordinates = "";
-      for (const location of getState().mapData.addresses)
+      for (const location of addresses)
         searchCoordinates += `${location.geocode[1]},${location.geocode[0]};`;
       searchCoordinates += `${geocode[1]},${geocode[0]}`;
       // console.log(searchCoordinates);
@@ -48,7 +49,6 @@ export const setRouteDirections = (addresses, address, actionType, geocode) => {
         `https://api.mapbox.com/directions/v5/mapbox/driving/${searchCoordinates}?alternatives=true&geometries=geojson&access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg`
       );
       const data = await result.json();
-      dispatch(addToList({ newAddress: address, geocode }));
       dispatch(
         updateRouteCoordinates({
           newCoordinates: data.routes[0].geometry.coordinates,
@@ -56,10 +56,10 @@ export const setRouteDirections = (addresses, address, actionType, geocode) => {
       );
     } else {
       dispatch(removeFromList({ toRemoveAddress: address }));
-      if (getState().mapData.addresses.length - 1 < 2) return;
+      if (addresses.length - 1 < 2) return;
 
       let searchCoordinates = "";
-      for (const location of getState().mapData.addresses) {
+      for (const location of addresses) {
         if (location.address !== address)
           searchCoordinates += `${location.geocode[1]},${location.geocode[0]};`;
       }

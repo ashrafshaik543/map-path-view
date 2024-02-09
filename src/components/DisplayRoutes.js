@@ -15,7 +15,8 @@ const DisplayRoutes = () => {
   const mapData = useSelector((state) => state.mapData);
 
   useEffect(() => {
-    if (!mapData.routeCoordinates) navigate("/");
+    // console
+    if (mapData.addresses.length < 2) navigate("/");
     const map = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/outdoors-v12",
