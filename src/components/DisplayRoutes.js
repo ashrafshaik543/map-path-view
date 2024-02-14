@@ -1,10 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
+import Form from "react-bootstrap/Form";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./app.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import useTicketGeocode from "./custom-hooks/useTicketGeocode";
+import useTechnicianGeocodes from "./custom-hooks/useTechnicianGeocodes";
+import useOptimalRoute from "./custom-hooks/useOptimalRoute";
+import { setRouteCoordinates } from "../store/mapOptionsActions";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg";
@@ -12,31 +17,50 @@ mapboxgl.accessToken =
 const DisplayRoutes = () => {
   const mapContainer = useRef();
   const navigate = useNavigate();
-  const mapData = useSelector((state) => state.mapData);
+  const ticketData = useSelector((state) => state.ticketData);
+  const customerAddressData = useSelector((state) => state.customerAddressData);
+  const mapOptions = useSelector((state) => state.mapOptions);
+  const ticketgeocodes = useTicketGeocode(ticketData, customerAddressData);
+  const [selectedTechnician, setSelectedTechnician] = useState(null);
+  const technicianGeocodes = useTechnicianGeocodes(
+    selectedTechnician,
+    ticketData,
+    customerAddressData,
+    mapOptions
+  );
+  const geocodesToVisit = useOptimalRoute(
+    selectedTechnician,
+    technicianGeocodes,
+    mapOptions.center
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {}, [selectedTechnician]);
 
   useEffect(() => {
-    // console
-    if (mapData.addresses.length < 2) navigate("/");
+    dispatch(setRouteCoordinates(geocodesToVisit));
+  }, [geocodesToVisit, dispatch]);
+
+  useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/outdoors-v12",
-      center: [-99.6649, 38.6013],
-      zoom: 13,
-      pitch: 60,
-      bearing: 80,
+      center: [-74.8732823, 42.66520382],
+      zoom: 6,
     });
 
-    // if (mapData.bounds) map.fitBounds(mapData.bounds);
-
-    mapData.addresses.map((location) =>
-      new mapboxgl.Marker()
-        .setLngLat([location.geocode[1], location.geocode[0]])
-        .addTo(map)
-    );
+    if (geocodesToVisit.length !== 0) {
+      console.log(geocodesToVisit);
+      geocodesToVisit.map((geocode) =>
+        new mapboxgl.Marker().setLngLat([geocode[1], geocode[0]]).addTo(map)
+      );
+    } else {
+      new mapboxgl.Marker().setLngLat([-74.8732823, 42.66520382]).addTo(map);
+    }
 
     map.on("load", () => {
-      let coordinates = mapData.routeCoordinates
-        ? mapData.routeCoordinates
+      let coordinates = mapOptions.routeCoordinates
+        ? mapOptions.routeCoordinates
         : [
             [-122.483696, 37.833818],
             [-122.483482, 37.833174],
@@ -63,14 +87,15 @@ const DisplayRoutes = () => {
 
       const bounds = new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]);
 
-      // Extend the 'LngLatBounds' to include every coordinate in the bounds result.
       for (const coord of coordinates) {
         bounds.extend(coord);
       }
 
-      map.fitBounds(bounds, {
-        padding: 20,
-      });
+      if (mapOptions.routeCoordinates) {
+        map.fitBounds(bounds, {
+          padding: 20,
+        });
+      }
 
       map.addSource("route", {
         type: "geojson",
@@ -99,15 +124,31 @@ const DisplayRoutes = () => {
     });
 
     return () => map.remove();
-  }, [mapData.routeCoordinates, mapData.addresses, mapData.bounds, navigate]);
+  }, [
+    mapOptions.bounds,
+    navigate,
+    mapOptions.routeCoordinates,
+    ticketgeocodes,
+    geocodesToVisit,
+  ]);
 
   return (
-    <div className="w-100 py-5 d-flex flex-column justify-content-center">
-      <div
-        className="align-self-center"
-        ref={mapContainer}
-        style={{ width: "90%", height: "80vh" }}
-      />
+    <div className="w-100 py-5 d-flex flex-column justify-content-center px-5">
+      <div style={{ width: "20%" }} className="mb-3">
+        <Form.Select
+          onChange={(e) => {
+            if (e.target.value !== "null")
+              setSelectedTechnician(e.target.value);
+            else setSelectedTechnician(null);
+          }}
+          aria-label="Default select example">
+          <option value="null">Select Technician for routes</option>
+          <option value="one">Technician 1</option>
+          <option value="two">Technician 2</option>
+          <option value="three">Technician 3</option>
+        </Form.Select>
+      </div>
+      <div className="w-100" ref={mapContainer} style={{ height: "80vh" }} />
     </div>
   );
 };

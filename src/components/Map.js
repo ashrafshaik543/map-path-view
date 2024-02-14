@@ -1,99 +1,84 @@
 import React, { useRef, useEffect } from "react";
 import mapboxgl from "!mapbox-gl"; /* eslint import/no-webpack-loader-syntax: off */
 import { useDispatch, useSelector } from "react-redux";
-import { updateBounds } from "../store/mapDataSlice";
+import useTicketGeocode from "./custom-hooks/useTicketGeocode";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg";
 
 const Map = () => {
-  const mapData = useSelector((state) => state.mapData);
+  const ticketData = useSelector((state) => state.ticketData);
+  const mapOptions = useSelector((state) => state.mapOptions);
+  const customerAddressData = useSelector((state) => state.customerAddressData);
   const mapContainerRef = useRef(null);
   const dispatch = useDispatch();
+  const ticketgeocodes = useTicketGeocode(ticketData, customerAddressData);
 
   // Initialize map when component mounts
   useEffect(() => {
     let map = [];
-    if (mapData.addresses.length === 0) {
+    if (ticketData.tickets.length === 0) {
       map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/streets-v12",
-        center: [-99.6649, 38.6013],
-        // maxBounds: bounds,
-        zoom: mapData.zoom,
+        center: [-74.8732823, 42.66520382],
+        zoom: mapOptions.zoom,
       });
 
-      new mapboxgl.Marker().setLngLat([-99.6649, 38.6013]).addTo(map);
-    } else if (mapData.addresses.length === 1) {
+      new mapboxgl.Marker().setLngLat([-74.8732823, 42.66520382]).addTo(map);
+    } else if (ticketData.tickets.length === 1) {
       map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/streets-v12",
-        center: [
-          mapData.addresses[0].geocode[1],
-          mapData.addresses[0].geocode[0],
-        ],
-        // maxBounds: bounds,
-        zoom: mapData.zoom,
+        center: [ticketgeocodes[0][1], ticketgeocodes[0][0]],
+
+        zoom: mapOptions.zoom,
       });
 
-      new mapboxgl.Marker()
-        .setLngLat([
-          mapData.addresses[0].geocode[1],
-          mapData.addresses[0].geocode[0],
-        ])
+      new mapboxgl.Marker({
+        color: ticketData.tickets[0].selected ? "blue" : "black",
+      })
+        .setLngLat([ticketgeocodes[0][1], ticketgeocodes[0][0]])
         .addTo(map);
     } else {
-      let minLat = mapData.addresses[0].geocode[0];
-      let maxLat = mapData.addresses[0].geocode[0];
-      let minLong = mapData.addresses[0].geocode[1];
-      let maxLong = mapData.addresses[0].geocode[1];
-      for (const location of mapData.addresses) {
-        minLat = Math.min(minLat, location.geocode[0]);
-        maxLat = Math.max(maxLat, location.geocode[0]);
-        minLong = Math.min(minLong, location.geocode[1]);
-        maxLong = Math.max(maxLong, location.geocode[1]);
+      let minLat = ticketgeocodes[0][0];
+      let maxLat = ticketgeocodes[0][0];
+      let minLong = ticketgeocodes[0][1];
+      let maxLong = ticketgeocodes[0][1];
+      for (const geocode of ticketgeocodes) {
+        minLat = Math.min(minLat, geocode[0]);
+        maxLat = Math.max(maxLat, geocode[0]);
+        minLong = Math.min(minLong, geocode[1]);
+        maxLong = Math.max(maxLong, geocode[1]);
       }
-      console.log([mapData.center[1], mapData.center[0]]);
+
       map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/streets-v12",
-        center: [mapData.center[1], mapData.center[0]],
+        center: [ticketgeocodes[0][1], ticketgeocodes[0][0]],
         zoom: 5,
       });
-      mapData.addresses.map((location) =>
-        new mapboxgl.Marker()
-          .setLngLat([location.geocode[1], location.geocode[0]])
+      ticketgeocodes.map((geocode, i) =>
+        new mapboxgl.Marker({
+          color: ticketData.tickets[i].selected ? "blue" : "black",
+        })
+          .setLngLat([geocode[1], geocode[0]])
           .addTo(map)
       );
-      dispatch(
-        updateBounds({
-          bounds: [
-            [minLong - 0.5, minLat - 0.5],
-            [maxLong + 0.5, maxLat + 0.5],
-          ],
-        })
-      );
-      // console.log([minLong - 0.1, minLat - 0.1], [maxLong + 0.1, maxLat + 0.1]);
+
       map.fitBounds([
         [minLong - 0.5, minLat - 0.5],
         [maxLong + 0.5, maxLat + 0.5],
       ]);
     }
 
-    // Create default markers
-    // geoJson.features.map((feature) =>
-    //   new mapboxgl.Marker().setLngLat(feature.geometry.coordinates).addTo(map)
-    // );
-
-    // Add navigation control (the +/- zoom buttons)
     map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
-    // Clean up on unmount
     return () => map.remove();
-  }, [mapData.addresses, mapData.zoom, mapData.center, dispatch]);
+  }, [ticketgeocodes, ticketData.tickets, dispatch, mapOptions.zoom]);
 
   return (
-    <div className="my-5 w-75 align-self-center">
+    <div style={{ width: "60%" }} className="my-5 align-self-center">
       <div ref={mapContainerRef} style={{ height: "500px", width: "100%" }} />
     </div>
   );
