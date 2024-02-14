@@ -6,12 +6,16 @@ import {
   decreaseCounter,
 } from "../store-slice/ticketDataSlice";
 
-export const setRouteDirections = (ticketData, ticket, actionType, index) => {
+export const setRouteDirections = (ticket, actionType, index) => {
   return async (dispatch, getState) => {
     if (actionType === "add") {
       //adding ticket to the ticket details list
       dispatch(increaseConunter());
-      dispatch(addToList({ newTicket: ticket }));
+      dispatch(
+        addToList({
+          newTicket: { ...ticket, id: getState().ticketData.tickets.length },
+        })
+      );
       if (getState().ticketData.tickets.length < 2) {
         dispatch(updateRouteCoordinates({ newCoordinates: null }));
         return;

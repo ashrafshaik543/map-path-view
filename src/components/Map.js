@@ -36,12 +36,19 @@ const Map = () => {
 
         zoom: mapOptions.zoom,
       });
-
-      new mapboxgl.Marker({
+      const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+        // "Construction on the Washington Monument began in 1848."
+        `Job Description: ${ticketData.tickets[0].jobDescription}`
+      );
+      const marker = new mapboxgl.Marker({
         color: ticketData.tickets[0].selected ? "blue" : "black",
       })
         .setLngLat([ticketgeocodes[0][1], ticketgeocodes[0][0]])
+        .setPopup(popup)
         .addTo(map);
+      const markerDiv = marker.getElement();
+      markerDiv.addEventListener("mouseenter", () => marker.togglePopup());
+      markerDiv.addEventListener("mouseleave", () => marker.togglePopup());
     } else {
       //if more than one ticket present
       //setting bounds based on north east and south west extreme ticket addresses
@@ -62,13 +69,24 @@ const Map = () => {
         center: [ticketgeocodes[0][1], ticketgeocodes[0][0]],
         zoom: 5,
       });
-      ticketgeocodes.map((geocode, i) =>
-        new mapboxgl.Marker({
+
+      ticketgeocodes.map((geocode, i) => {
+        const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+          // "Construction on the Washington Monument began in 1848."
+          `Job Description: ${ticketData.tickets[i].jobDescription}`
+        );
+        const marker = new mapboxgl.Marker({
           color: ticketData.tickets[i].selected ? "blue" : "black",
         })
           .setLngLat([geocode[1], geocode[0]])
-          .addTo(map)
-      );
+          .setPopup(popup)
+          .addTo(map);
+        const markerDiv = marker.getElement();
+        markerDiv.addEventListener("mouseenter", () => marker.togglePopup());
+        markerDiv.addEventListener("mouseleave", () => marker.togglePopup());
+
+        return marker;
+      });
 
       map.fitBounds([
         [minLong - 0.5, minLat - 0.5],

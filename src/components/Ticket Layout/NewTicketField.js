@@ -13,7 +13,6 @@ const NewTicketField = () => {
   const [jobDescriptionValue, setJobDescriptionValue] = useState("");
   const [customerId, setCustomerId] = useState(-1);
   const customerData = useSelector((state) => state.customerData);
-  const ticketData = useSelector((state) => state.ticketData);
   const [customerNameOptions, setCustomerNameOptions] = useState([]);
   //form validation
   const [error, setError] = useState("");
@@ -47,9 +46,7 @@ const NewTicketField = () => {
           //adding ticket to redux store
           dispatch(
             setRouteDirections(
-              ticketData,
               {
-                id: ticketData.idCounter + 1,
                 jobDescription: jobDescriptionValue,
                 customerId,
                 selected: false,

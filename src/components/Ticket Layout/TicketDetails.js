@@ -42,12 +42,7 @@ const TicketDetails = ({ index, ticket }) => {
           onClick={() => {
             //remove ticket data from store
             dispatch(
-              setRouteDirections(
-                ticketData,
-                ticketData.tickets[index],
-                "remove",
-                index
-              )
+              setRouteDirections(ticketData.tickets[index], "remove", index)
             );
           }}
           variant="light">
