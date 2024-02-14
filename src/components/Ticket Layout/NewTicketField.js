@@ -29,7 +29,6 @@ const NewTicketField = () => {
 
   const resetFields = () => {
     //resetting form inputs after submitting
-    console.log("resetted");
     setJobDescriptionValue("");
     setCustomerNameInputValue("");
     setCustomerNameValue("");

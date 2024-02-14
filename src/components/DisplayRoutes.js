@@ -42,7 +42,6 @@ const DisplayRoutes = () => {
 
   useEffect(() => {
     //setting route direction coordinates for the technician to view it on the map
-    console.log(geocodesToVisit);
     dispatch(setRouteCoordinates(geocodesToVisit));
   }, [geocodesToVisit, dispatch]);
 
@@ -56,7 +55,6 @@ const DisplayRoutes = () => {
 
     if (geocodesToVisit.length !== 0) {
       //add markers to all the destinations the technician would visit
-      console.log(geocodesToVisit);
       geocodesToVisit.map((geocode) =>
         new mapboxgl.Marker().setLngLat([geocode[1], geocode[0]]).addTo(map)
       );
