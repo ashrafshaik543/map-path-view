@@ -6,31 +6,20 @@ import Map from "./components/Map";
 import NewTicketField from "./components/Ticket Layout/NewTicketField";
 import TicketsList from "./components/Ticket Layout/TicketsList";
 import customers from "./customers.json";
-import { useCallback, useEffect } from "react";
-import { setCustomerData } from "./store/customerDataActions";
+import { useEffect } from "react";
+import { setCustomerData } from "./store/store-actions/customerDataActions";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const getGeocode = useCallback(async (address) => {
-    const res = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?proximity=ip&access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg`
-    );
-    const data = await res.json();
-    let geocode = [
-      data.features[0].geometry.coordinates[1],
-      data.features[0].geometry.coordinates[0],
-    ];
-    return geocode;
-  }, []);
-
   useEffect(() => {
     let customerNames = [...customers.names];
     let customerAddresses = [...customers.addresses];
 
+    //store customer data in redux
     dispatch(setCustomerData(customerNames, customerAddresses));
-  }, [dispatch, getGeocode]);
+  }, [dispatch]);
 
   return (
     <Container

@@ -1,10 +1,10 @@
-import { updateRouteCoordinates } from "./mapOptionsSlice";
+import { updateRouteCoordinates } from "../store-slice/mapOptionsSlice";
 import {
   addToList,
   removeFromList,
   increaseConunter,
   decreaseCounter,
-} from "./ticketDataSlice";
+} from "../store-slice/ticketDataSlice";
 
 export const setRouteDirections = (ticketData, ticket, actionType, index) => {
   return async (dispatch, getState) => {

@@ -1,14 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import mapDataReducer from "./mapDataSlice";
-import ticketDataReducer from "./ticketDataSlice";
-import mapOptionsReducer from "./mapOptionsSlice";
-import customerDataReducer from "./customerDataSlice";
-import customerAddressDataReducer from "./customerAddressDataSlice";
+import ticketDataReducer from "./store-slice/ticketDataSlice";
+import mapOptionsReducer from "./store-slice/mapOptionsSlice";
+import customerDataReducer from "./store-slice/customerDataSlice";
+import customerAddressDataReducer from "./store-slice/customerAddressDataSlice";
 
 const store = configureStore({
   reducer: {
-    mapData: mapDataReducer,
     ticketData: ticketDataReducer,
     mapOptions: mapOptionsReducer,
     customerData: customerDataReducer,

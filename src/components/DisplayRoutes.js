@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useTicketGeocode from "./custom-hooks/useTicketGeocode";
 import useTechnicianGeocodes from "./custom-hooks/useTechnicianGeocodes";
 import useOptimalRoute from "./custom-hooks/useOptimalRoute";
-import { setRouteCoordinates } from "../store/mapOptionsActions";
+import { setRouteCoordinates } from "../store/store-actions/mapOptionsActions";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg";

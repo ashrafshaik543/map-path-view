@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { setRouteDirections } from "../../store/ticketActions";
+import { setRouteDirections } from "../../store/store-actions/ticketActions";
 import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
 // import Dropdown from "react-bootstrap/Dropdown";
@@ -8,7 +8,7 @@ import {
   assignTechnician,
   changeTicketCheckStatus,
   unassignTechnician,
-} from "../../store/ticketDataSlice";
+} from "../../store/store-slice/ticketDataSlice";
 
 const TicketDetails = ({ index, ticket }) => {
   const ticketData = useSelector((state) => state.ticketData);

@@ -1,5 +1,5 @@
-import { updateCustomersArray } from "./customerDataSlice";
-import { updateAddressDetailsArray } from "./customerAddressDataSlice";
+import { updateCustomersArray } from "../store-slice/customerDataSlice";
+import { updateAddressDetailsArray } from "../store-slice/customerAddressDataSlice";
 
 export const setCustomerData = (customerNames, customerAddresses) => {
   return async (dispatch) => {

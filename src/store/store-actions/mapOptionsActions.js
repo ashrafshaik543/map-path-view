@@ -1,4 +1,4 @@
-import { updateRouteCoordinates } from "./mapOptionsSlice";
+import { updateRouteCoordinates } from "../store-slice/mapOptionsSlice";
 
 export const setRouteCoordinates = (geocodesToVisit) => {
   return async (dispatch) => {
