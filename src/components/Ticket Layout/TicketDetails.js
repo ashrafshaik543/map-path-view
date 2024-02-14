@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRouteDirections } from "../../store/store-actions/ticketActions";
 import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
-// import Dropdown from "react-bootstrap/Dropdown";
+
 import {
   assignTechnician,
   changeTicketCheckStatus,
@@ -24,6 +24,7 @@ const TicketDetails = ({ index, ticket }) => {
         <Form.Check // prettier-ignore
           defaultChecked={ticketData.tickets[index].selected}
           onChange={(e) => {
+            //checkbox to or not to assign a technician
             console.log(e.target.checked);
             dispatch(
               changeTicketCheckStatus({ index, status: e.target.checked })
@@ -39,6 +40,7 @@ const TicketDetails = ({ index, ticket }) => {
         <Button
           className="align-self-end mb-2"
           onClick={() => {
+            //remove ticket data from store
             dispatch(
               setRouteDirections(
                 ticketData,
@@ -52,21 +54,10 @@ const TicketDetails = ({ index, ticket }) => {
           &#10060;
         </Button>
         {ticketData.tickets[index].selected && (
-          // <Dropdown>
-          //   <Dropdown.Toggle variant="success" id="dropdown-basic">
-          //     Select Technician
-          //   </Dropdown.Toggle>
-
-          //   <Dropdown.Menu>
-          //     <Dropdown.Item href="#/action-1">Tech A</Dropdown.Item>
-          //     <Dropdown.Item href="#/action-2">Tech B</Dropdown.Item>
-          //     <Dropdown.Item href="#/action-3">Tech C</Dropdown.Item>
-          //   </Dropdown.Menu>
-          // </Dropdown>
           <Form.Select
             onChange={(e) => {
+              //assigning technician to ticket
               if (e.target.value !== "0") {
-                // console.log(e.target.value);
                 dispatch(
                   assignTechnician({ technician: e.target.value, index })
                 );

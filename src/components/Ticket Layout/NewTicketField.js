@@ -7,17 +7,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRouteDirections } from "../../store/store-actions/ticketActions";
 
 const NewTicketField = () => {
+  //setting state of form data
   const [customerNameValue, setCustomerNameValue] = useState("");
   const [customerNameInputValue, setCustomerNameInputValue] = useState("");
-  const customerData = useSelector((state) => state.customerData);
-  const [customerNameOptions, setCustomerNameOptions] = useState([]);
   const [jobDescriptionValue, setJobDescriptionValue] = useState("");
-  const [error, setError] = useState("");
   const [customerId, setCustomerId] = useState(-1);
-  const dispatch = useDispatch();
+  const customerData = useSelector((state) => state.customerData);
   const ticketData = useSelector((state) => state.ticketData);
+  const [customerNameOptions, setCustomerNameOptions] = useState([]);
+  //form validation
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    //updating list of customers on load
     let customerNames = [];
     for (const customer of customerData.customers) {
       customerNames.push(customer.name);
@@ -26,6 +29,7 @@ const NewTicketField = () => {
   }, [customerData]);
 
   const resetFields = () => {
+    //resetting form inputs after submitting
     console.log("resetted");
     setJobDescriptionValue("");
     setCustomerNameInputValue("");
@@ -40,6 +44,7 @@ const NewTicketField = () => {
         if (!customerNameValue || !jobDescriptionValue)
           setError("Enter all the details!");
         else {
+          //adding ticket to redux store
           dispatch(
             setRouteDirections(
               ticketData,
@@ -80,7 +85,7 @@ const NewTicketField = () => {
           }}
           onChange={async (e, newValue) => {
             setCustomerNameValue(newValue);
-
+            //retrieving customer id after selecting the customer
             let index = customerData.customers.findIndex(
               (element) => element.name === newValue
             );

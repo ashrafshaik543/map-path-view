@@ -15,19 +15,24 @@ mapboxgl.accessToken =
   "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg";
 
 const DisplayRoutes = () => {
+  //implementing empty div to add map
   const mapContainer = useRef();
   const navigate = useNavigate();
   const ticketData = useSelector((state) => state.ticketData);
   const customerAddressData = useSelector((state) => state.customerAddressData);
   const mapOptions = useSelector((state) => state.mapOptions);
+  //retrieving geocodes of added or existing tickets
   const ticketgeocodes = useTicketGeocode(ticketData, customerAddressData);
+  //select which technician routes to view on map
   const [selectedTechnician, setSelectedTechnician] = useState(null);
+  //geocodes of all the points the selected technician would visit
   const technicianGeocodes = useTechnicianGeocodes(
     selectedTechnician,
     ticketData,
     customerAddressData,
     mapOptions
   );
+  //applying TSP algo to all destinations the technician would visit and returing best route
   const geocodesToVisit = useOptimalRoute(
     selectedTechnician,
     technicianGeocodes,
@@ -35,9 +40,9 @@ const DisplayRoutes = () => {
   );
   const dispatch = useDispatch();
 
-  useEffect(() => {}, [selectedTechnician]);
-
   useEffect(() => {
+    //setting route direction coordinates for the technician to view it on the map
+    console.log(geocodesToVisit);
     dispatch(setRouteCoordinates(geocodesToVisit));
   }, [geocodesToVisit, dispatch]);
 
@@ -50,11 +55,13 @@ const DisplayRoutes = () => {
     });
 
     if (geocodesToVisit.length !== 0) {
+      //add markers to all the destinations the technician would visit
       console.log(geocodesToVisit);
       geocodesToVisit.map((geocode) =>
         new mapboxgl.Marker().setLngLat([geocode[1], geocode[0]]).addTo(map)
       );
     } else {
+      //if no assigned destinations or customers to the technician
       new mapboxgl.Marker().setLngLat([-74.8732823, 42.66520382]).addTo(map);
     }
 
@@ -85,6 +92,7 @@ const DisplayRoutes = () => {
             [-122.493782, 37.833683],
           ];
 
+      //fit bounds to the route marked on the maps
       const bounds = new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]);
 
       for (const coord of coordinates) {

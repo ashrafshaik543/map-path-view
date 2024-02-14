@@ -1,14 +1,9 @@
 import ListGroup from "react-bootstrap/ListGroup";
 import { useSelector } from "react-redux";
 import TicketDetails from "./TicketDetails";
-import { useEffect } from "react";
 
 const TicketsList = () => {
   const ticketData = useSelector((state) => state.ticketData);
-
-  useEffect(() => {
-    // setTechnicianInfo()
-  }, []);
 
   return (
     <div style={{ width: "35%" }} className="mb-5 mt-3">

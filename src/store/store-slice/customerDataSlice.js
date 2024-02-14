@@ -12,9 +12,11 @@ const customerDataSlice = createSlice({
   name: "customers",
   initialState,
   reducers: {
+    //adding customer details
     addCustomer(state, action) {
       state.customers.push(action.payload.newCustomer);
     },
+    //updating or setting the customer details
     updateCustomersArray(state, action) {
       state.customers = action.payload.newCustomers;
     },

@@ -27,12 +27,14 @@ const ticketDataSlice = createSlice({
     changeTicketCheckStatus(state, action) {
       state.tickets[action.payload.index].selected = action.payload.status;
     },
+    //counter for ticket id
     increaseConunter(state) {
       state.idCounter++;
     },
     decreaseCounter(state) {
       state.idCounter--;
     },
+    //assign or unassign a technician to the ticket
     assignTechnician(state, action) {
       state.tickets[action.payload.index].technician =
         action.payload.technician;

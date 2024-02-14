@@ -18,6 +18,7 @@ const Map = () => {
   useEffect(() => {
     let map = [];
     if (ticketData.tickets.length === 0) {
+      //if no tickets submitted or added
       map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/streets-v12",
@@ -27,6 +28,7 @@ const Map = () => {
 
       new mapboxgl.Marker().setLngLat([-74.8732823, 42.66520382]).addTo(map);
     } else if (ticketData.tickets.length === 1) {
+      //if only one ticket exists
       map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/streets-v12",
@@ -41,6 +43,8 @@ const Map = () => {
         .setLngLat([ticketgeocodes[0][1], ticketgeocodes[0][0]])
         .addTo(map);
     } else {
+      //if more than one ticket present
+      //setting bounds based on north east and south west extreme ticket addresses
       let minLat = ticketgeocodes[0][0];
       let maxLat = ticketgeocodes[0][0];
       let minLong = ticketgeocodes[0][1];

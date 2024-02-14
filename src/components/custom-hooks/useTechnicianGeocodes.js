@@ -4,6 +4,7 @@ const useTechnicianGeocodes = (
   customerAddressData,
   mapOptions
 ) => {
+  //retrive all the geocodes of assigned ticket or customer for a specefic technician
   let technicianGeocodes = [[mapOptions.center[1], mapOptions.center[0]]];
   let technicianTickets = ticketData.tickets.filter(
     (ticket) => ticket.technician === technician

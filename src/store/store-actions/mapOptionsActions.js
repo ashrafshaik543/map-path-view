@@ -3,6 +3,7 @@ import { updateRouteCoordinates } from "../store-slice/mapOptionsSlice";
 export const setRouteCoordinates = (geocodesToVisit) => {
   return async (dispatch) => {
     if (geocodesToVisit.length === 0) {
+      //if no destinations to visit for the technician selected
       dispatch(
         updateRouteCoordinates({
           newCoordinates: null,
@@ -10,6 +11,7 @@ export const setRouteCoordinates = (geocodesToVisit) => {
       );
       return;
     }
+    //searching and setting  the route coordinated based on the geocodesToVisit
     let searchCoordinates = "";
     for (const geocode of geocodesToVisit)
       searchCoordinates += `${geocode[1]},${geocode[0]};`;

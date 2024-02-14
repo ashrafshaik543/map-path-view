@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 
 const useOptimalRoute = (technician, technicianGeocodes, currentLocation) => {
+  //destination or customer geocode locations to visit for the technician
   const [geocodesToVisit, setGeocodesToVisit] = useState([]);
 
   const getGraph = useCallback(async () => {
     if (technicianGeocodes.length === 1 || !technicianGeocodes) {
+      //if only technician location geocode present return empty array of geocodes to visit
       setGeocodesToVisit([]);
       return;
     }
+    //adjecency matrix of distances of all the customer geocodes
     let tempGraph = [];
     for (const geocode of technicianGeocodes)
       tempGraph.push(new Array(technicianGeocodes.length).fill(0));
@@ -23,11 +26,12 @@ const useOptimalRoute = (technician, technicianGeocodes, currentLocation) => {
         }
       }
     }
-
+    //did technician visit the geocode
     let v = new Array(technicianGeocodes.length).fill(false);
     v[0] = true;
     let shortestDistance = Infinity;
     let shortestPath = [];
+    //algo for Travelling Salesman Problem
     const TSP = (v, currPos, n, count, cost, path) => {
       if (count === n && tempGraph[currPos][0] !== 0) {
         if (shortestDistance > cost + tempGraph[currPos][0])
@@ -52,7 +56,6 @@ const useOptimalRoute = (technician, technicianGeocodes, currentLocation) => {
     TSP(v, 0, technicianGeocodes.length, 1, 0, [
       [currentLocation[1], currentLocation[0]],
     ]);
-    console.log(shortestPath);
     setGeocodesToVisit(shortestPath);
   }, [technicianGeocodes]);
 

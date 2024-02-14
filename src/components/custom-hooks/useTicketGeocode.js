@@ -1,4 +1,5 @@
 const useTicketGeocode = (ticketData, customerAddressData) => {
+  //retriving all the geocodes of the tickets
   let ticketCustomerIds = ticketData.tickets.map((ticket) => ticket.customerId);
   let ticketgeocodes = [];
   for (const addressDetail of customerAddressData.addressDetails) {
