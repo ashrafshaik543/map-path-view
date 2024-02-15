@@ -10,6 +10,7 @@ import useTicketGeocode from "./custom-hooks/useTicketGeocode";
 import useTechnicianToVisitGeocodes from "./custom-hooks/useTechnicianToVisitGeocodes";
 import useOptimalRoute from "./custom-hooks/useOptimalRoute";
 import { setRouteCoordinates } from "../store/store-actions/mapOptionsActions";
+import { Button } from "react-bootstrap";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg";
@@ -168,7 +169,26 @@ const DisplayRoutes = () => {
           <option value="three">Technician 3</option>
         </Form.Select>
       </div>
-      <div className="w-100" ref={mapContainer} style={{ height: "80vh" }} />
+      <div
+        className="w-100 mb-3"
+        ref={mapContainer}
+        style={{ height: "80vh" }}
+      />
+      <div className="w-25 align-self-center">
+        <Button
+          className="w-100"
+          onClick={() => {
+            let directionsLink = "https://www.google.com/maps/dir";
+            for (const geocode of geocodesToVisit) {
+              directionsLink += `/${geocode[0]},${geocode[1]}`;
+            }
+            window.open(directionsLink, "_blank");
+
+            // console.log(directionsLink);
+          }}>
+          Get Directions
+        </Button>
+      </div>
     </div>
   );
 };
