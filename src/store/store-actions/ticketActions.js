@@ -1,4 +1,5 @@
 import { updateRouteCoordinates } from "../store-slice/mapOptionsSlice";
+import { unAssignTechnicianByTicketId } from "../store-slice/technicianDataSlice";
 import {
   addToList,
   removeFromList,
@@ -35,13 +36,14 @@ export const setRouteDirections = (ticket, actionType, index) => {
         return;
       }
     } else {
-      console.log(index);
       //removing the ticket from the ticket details list
       let tempTicketData = [...getState().ticketData.tickets];
-      index = getState().ticketData.tickets.findIndex(
-        (ticket) => index === ticket.id
-      );
       tempTicketData.splice(index, 1);
+      dispatch(
+        unAssignTechnicianByTicketId({
+          ticketId: getState().ticketData.tickets[index].id,
+        })
+      );
       dispatch(removeFromList({ updatedTickets: tempTicketData }));
 
       if (getState().ticketData.tickets.length < 2) {

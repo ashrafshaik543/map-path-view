@@ -73,10 +73,13 @@ const TicketDetails = ({ index, ticket }) => {
                     ticketId: index,
                   })
                 );
-                dispatch(unassignTechnician({ index }));
+                dispatch(
+                  assignTechnician({ index: index, technician: e.target.value })
+                );
               } else {
                 dispatch(unAssignTechnicianByTicketId({ ticketId: index }));
                 console.log(e.target.value);
+                dispatch(unassignTechnician({ index }));
               }
             }}
             aria-label="Default select example">

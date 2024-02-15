@@ -7,7 +7,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "./app.css";
 import { useDispatch, useSelector } from "react-redux";
 import useTicketGeocode from "./custom-hooks/useTicketGeocode";
-import useTechnicianGeocodes from "./custom-hooks/useTechnicianGeocodes";
+import useTechnicianToVisitGeocodes from "./custom-hooks/useTechnicianToVisitGeocodes";
 import useOptimalRoute from "./custom-hooks/useOptimalRoute";
 import { setRouteCoordinates } from "../store/store-actions/mapOptionsActions";
 
@@ -24,44 +24,58 @@ const DisplayRoutes = () => {
   //retrieving geocodes of added or existing tickets
   const ticketgeocodes = useTicketGeocode(ticketData, customerAddressData);
   //select which technician routes to view on map
-  const [selectedTechnician, setSelectedTechnician] = useState(null);
+  const [selectedTechnician, setSelectedTechnician] = useState("one");
+  const techicianData = useSelector((state) => state.technicianData);
   //geocodes of all the points the selected technician would visit
-  const technicianGeocodes = useTechnicianGeocodes(
-    selectedTechnician,
-    ticketData,
-    customerAddressData,
-    mapOptions
-  );
+  const { technicianToVisitGeocodes, destinationDetails } =
+    useTechnicianToVisitGeocodes(
+      selectedTechnician,
+      ticketData,
+      customerAddressData,
+      techicianData
+    );
   //applying TSP algo to all destinations the technician would visit and returing best route
-  const geocodesToVisit = useOptimalRoute(
+  const { geocodesToVisit, geocodesToVisitDetails } = useOptimalRoute(
     selectedTechnician,
-    technicianGeocodes,
-    mapOptions.center
+    technicianToVisitGeocodes,
+    destinationDetails
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
     //setting route direction coordinates for the technician to view it on the map
+    // console.log(geocodesToVisitDetails);
     dispatch(setRouteCoordinates(geocodesToVisit));
+    // else dispatch(setRouteCoordinates(null));
   }, [geocodesToVisit, dispatch]);
 
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/outdoors-v12",
-      center: [-74.8732823, 42.66520382],
+      center: [geocodesToVisit[0][1], geocodesToVisit[0][0]],
       zoom: 6,
     });
-
-    if (geocodesToVisit.length !== 0) {
-      //add markers to all the destinations the technician would visit
-      geocodesToVisit.map((geocode) =>
-        new mapboxgl.Marker().setLngLat([geocode[1], geocode[0]]).addTo(map)
-      );
-    } else {
-      //if no assigned destinations or customers to the technician
-      new mapboxgl.Marker().setLngLat([-74.8732823, 42.66520382]).addTo(map);
-    }
+    geocodesToVisit.map((geocode, i) => {
+      let popup = "";
+      if (i == 0) {
+        popup = new mapboxgl.Popup({ offset: 25 }).setText(
+          `Technician: ${selectedTechnician}`
+        );
+      } else {
+        popup = new mapboxgl.Popup({ offset: 25 }).setText(
+          `${geocodesToVisitDetails[i - 1]}`
+        );
+      }
+      const marker = new mapboxgl.Marker()
+        .setLngLat([geocode[1], geocode[0]])
+        .setPopup(popup)
+        .addTo(map);
+      const markerDiv = marker.getElement();
+      markerDiv.addEventListener("mouseenter", () => marker.togglePopup());
+      markerDiv.addEventListener("mouseleave", () => marker.togglePopup());
+      return marker;
+    });
 
     map.on("load", () => {
       let coordinates = mapOptions.routeCoordinates
@@ -148,7 +162,7 @@ const DisplayRoutes = () => {
             else setSelectedTechnician(null);
           }}
           aria-label="Default select example">
-          <option value="null">Select Technician for routes</option>
+          {/* <option value="null">Select Technician for routes</option> */}
           <option value="one">Technician 1</option>
           <option value="two">Technician 2</option>
           <option value="three">Technician 3</option>
