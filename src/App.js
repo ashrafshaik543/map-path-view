@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Map from "./components/Map";
 import NewTicketField from "./components/Ticket Layout/NewTicketField";
 import TicketsList from "./components/Ticket Layout/TicketsList";
-import customers from "./store/customers.json";
 import { useEffect } from "react";
 import { setCustomerData } from "./store/store-actions/customerDataActions";
 
@@ -14,11 +13,8 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let customerNames = [...customers.names];
-    let customerAddresses = [...customers.addresses];
-
     //store customer data in redux
-    dispatch(setCustomerData(customerNames, customerAddresses));
+    dispatch(setCustomerData());
   }, [dispatch]);
 
   return (
