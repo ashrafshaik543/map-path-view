@@ -13,7 +13,7 @@ import { setRouteCoordinates } from "../store/store-actions/mapOptionsActions";
 import { Button } from "react-bootstrap";
 
 mapboxgl.accessToken =
-  "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg";
+  "pk.eyJ1IjoiYXNoNTQzMjEiLCJhIjoiY2w2OHM1dXNuMGcwYzNkcWhubDZ4amNicyJ9.iysD0cFsVJJw-TPBHRzjDg";
 
 const DisplayRoutes = () => {
   //implementing empty div to add map
@@ -59,7 +59,7 @@ const DisplayRoutes = () => {
     });
     geocodesToVisit.map((geocode, i) => {
       let popup = "";
-      if (i == 0) {
+      if (i === 0) {
         popup = new mapboxgl.Popup({ offset: 25 }).setText(
           `Technician: ${selectedTechnician}`
         );
@@ -151,6 +151,8 @@ const DisplayRoutes = () => {
     mapOptions.routeCoordinates,
     ticketgeocodes,
     geocodesToVisit,
+    geocodesToVisitDetails,
+    selectedTechnician,
   ]);
 
   return (

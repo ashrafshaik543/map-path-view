@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useTicketGeocode from "./custom-hooks/useTicketGeocode";
 
 mapboxgl.accessToken =
-  "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg";
+  "pk.eyJ1IjoiYXNoNTQzMjEiLCJhIjoiY2w2OHM1dXNuMGcwYzNkcWhubDZ4amNicyJ9.iysD0cFsVJJw-TPBHRzjDg";
 
 const Map = () => {
   const ticketData = useSelector((state) => state.ticketData);
@@ -118,7 +118,13 @@ const Map = () => {
       [maxLong + 0.5, maxLat + 0.5],
     ]);
     return () => map.remove();
-  }, [ticketgeocodes, ticketData.tickets, dispatch, mapOptions.zoom]);
+  }, [
+    ticketgeocodes,
+    ticketData.tickets,
+    dispatch,
+    mapOptions.zoom,
+    technicianGeocodes,
+  ]);
 
   return (
     <div style={{ width: "60%" }} className="my-5 align-self-center">
