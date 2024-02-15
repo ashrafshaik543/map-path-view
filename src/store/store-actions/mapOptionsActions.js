@@ -2,7 +2,8 @@ import { updateRouteCoordinates } from "../store-slice/mapOptionsSlice";
 
 export const setRouteCoordinates = (geocodesToVisit) => {
   return async (dispatch) => {
-    if (geocodesToVisit.length === 0) {
+    console.log(geocodesToVisit);
+    if (geocodesToVisit.length === 1) {
       //if no destinations to visit for the technician selected
       dispatch(
         updateRouteCoordinates({
@@ -19,10 +20,13 @@ export const setRouteCoordinates = (geocodesToVisit) => {
       0,
       searchCoordinates.length - 1
     );
+    console.log(searchCoordinates);
     const result = await fetch(
-      `https://api.mapbox.com/directions/v5/mapbox/driving/${searchCoordinates}?alternatives=true&geometries=geojson&access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg`
+      `https://api.mapbox.com/directions/v5/mapbox/driving/${searchCoordinates}?alternatives=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg`
     );
+
     const data = await result.json();
+    console.log(data);
     dispatch(
       updateRouteCoordinates({
         newCoordinates: data.routes[0].geometry.coordinates,

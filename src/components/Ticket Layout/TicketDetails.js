@@ -9,10 +9,20 @@ import {
   changeTicketCheckStatus,
   unassignTechnician,
 } from "../../store/store-slice/ticketDataSlice";
+import {
+  assignTicketToTechnician,
+  unAssignTechnicianByTicketId,
+} from "../../store/store-slice/technicianDataSlice";
+import { useEffect } from "react";
 
 const TicketDetails = ({ index, ticket }) => {
   const ticketData = useSelector((state) => state.ticketData);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(ticketData.tickets[index]);
+    console.log(index);
+  });
   return (
     <ListGroup.Item className="d-flex flex-row justify-content-between">
       <div className="d-flex flex-column d-inline mb-0 justify-content-between">
@@ -29,7 +39,10 @@ const TicketDetails = ({ index, ticket }) => {
             dispatch(
               changeTicketCheckStatus({ index, status: e.target.checked })
             );
-            if (!e.target.checked) dispatch(unassignTechnician({ index }));
+            if (!e.target.checked) {
+              dispatch(unassignTechnician({ index }));
+              dispatch(unAssignTechnicianByTicketId({ ticketId: index }));
+            }
           }}
           type={"checkbox"}
           id={`default-checkbox${index}`}
@@ -51,12 +64,21 @@ const TicketDetails = ({ index, ticket }) => {
         {ticketData.tickets[index].selected && (
           <Form.Select
             onChange={(e) => {
+              console.log(e.target.value);
               //assigning technician to ticket
               if (e.target.value !== "0") {
                 dispatch(
-                  assignTechnician({ technician: e.target.value, index })
+                  assignTicketToTechnician({
+                    technician: e.target.value,
+                    ticketId: index,
+                  })
+                );
+                dispatch(
+                  assignTechnician({ index: index, technician: e.target.value })
                 );
               } else {
+                dispatch(unAssignTechnicianByTicketId({ ticketId: index }));
+                console.log(e.target.value);
                 dispatch(unassignTechnician({ index }));
               }
             }}
