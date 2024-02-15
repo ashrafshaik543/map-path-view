@@ -1,13 +1,14 @@
 import ListGroup from "react-bootstrap/ListGroup";
 import { useSelector } from "react-redux";
 import TicketDetails from "./TicketDetails";
+import classes from "./TIcketsList.module.css";
 
 const TicketsList = () => {
   const ticketData = useSelector((state) => state.ticketData);
-
+  const style = `mb-5 mt-3 align-self-center align-self-lg-start me-3 ${classes.list}`;
   // useEffect(() => {}, []);
   return (
-    <div style={{ width: "35%" }} className="mb-5 mt-3">
+    <div className={style}>
       <p>
         <b>Tickets List:</b>
       </p>

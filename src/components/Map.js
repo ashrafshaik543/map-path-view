@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import mapboxgl from "!mapbox-gl"; /* eslint import/no-webpack-loader-syntax: off */
 import { useDispatch, useSelector } from "react-redux";
 import useTicketGeocode from "./custom-hooks/useTicketGeocode";
+import classes from "./Map.module.css";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoiYXNoNTQzMjEiLCJhIjoiY2w2OHM1dXNuMGcwYzNkcWhubDZ4amNicyJ9.iysD0cFsVJJw-TPBHRzjDg";
@@ -125,10 +126,15 @@ const Map = () => {
     mapOptions.zoom,
     technicianGeocodes,
   ]);
+  const mapStyle = `my-5 align-self-center ${classes.map}`;
 
   return (
-    <div style={{ width: "60%" }} className="my-5 align-self-center">
-      <div ref={mapContainerRef} style={{ height: "500px", width: "100%" }} />
+    <div className="w-100">
+      <div
+        ref={mapContainerRef}
+        // style={{ height: "500px", width: "100%" }}
+        className={mapStyle}
+      />
     </div>
   );
 };

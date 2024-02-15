@@ -26,7 +26,7 @@ function App() {
       </div>
 
       <div
-        className="d-flex flex-row w-100 align-self-center d-flex flex-row px-5 my-4 justify-content-between"
+        className="d-flex flex-column flex-lg-row w-100 align-self-center d-flex flex-row px-5 my-4 justify-content-between"
         style={{ height: "90%" }}>
         <TicketsList />
         <Map />

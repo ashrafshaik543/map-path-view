@@ -1,0 +1,15 @@
+.map {
+  height: 500px;
+}
+
+@media only screen and (min-width: 992px) {
+  .list {
+    width: 61%;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .list {
+    width: 80%;
+  }
+}
