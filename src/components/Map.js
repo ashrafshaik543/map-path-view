@@ -5,7 +5,7 @@ import useTicketGeocode from "./custom-hooks/useTicketGeocode";
 import classes from "./Map.module.css";
 
 mapboxgl.accessToken =
-  "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg";
+  "pk.eyJ1IjoiYXNoNTQzMjEiLCJhIjoiY2w2OHM1dXNuMGcwYzNkcWhubDZ4amNicyJ9.iysD0cFsVJJw-TPBHRzjDg";
 
 const Map = () => {
   const ticketData = useSelector((state) => state.ticketData);

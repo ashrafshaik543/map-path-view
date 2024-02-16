@@ -27,7 +27,7 @@ const useOptimalRoute = (
       for (let j = 0; j < technicianToVisitGeocodes.length; j++) {
         if (i !== j) {
           const res = await fetch(
-            `https://api.mapbox.com/directions/v5/mapbox/driving/${technicianToVisitGeocodes[i][1]},${technicianToVisitGeocodes[i][0]};${technicianToVisitGeocodes[j][1]},${technicianToVisitGeocodes[j][0]}?access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg`
+            `https://api.mapbox.com/directions/v5/mapbox/driving/${technicianToVisitGeocodes[i][1]},${technicianToVisitGeocodes[i][0]};${technicianToVisitGeocodes[j][1]},${technicianToVisitGeocodes[j][0]}?access_token=pk.eyJ1IjoiYXNoNTQzMjEiLCJhIjoiY2w2OHM1dXNuMGcwYzNkcWhubDZ4amNicyJ9.iysD0cFsVJJw-TPBHRzjDg`
           );
           const data = await res.json();
           tempGraph[i][j] = data.routes[0].distance;
