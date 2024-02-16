@@ -22,7 +22,7 @@ export const setRouteCoordinates = (geocodesToVisit) => {
     );
     console.log(searchCoordinates);
     const result = await fetch(
-      `https://api.mapbox.com/directions/v5/mapbox/driving/${searchCoordinates}?alternatives=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiYXNoNTQzMjEiLCJhIjoiY2w2OHM1dXNuMGcwYzNkcWhubDZ4amNicyJ9.iysD0cFsVJJw-TPBHRzjDg`
+      `https://api.mapbox.com/directions/v5/mapbox/driving/${searchCoordinates}?alternatives=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg`
     );
 
     const data = await result.json();
