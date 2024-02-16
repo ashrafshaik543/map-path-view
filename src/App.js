@@ -8,6 +8,13 @@ import TicketsList from "./components/Ticket Layout/TicketsList";
 import { useEffect } from "react";
 import { setCustomerData } from "./store/store-actions/customerDataActions";
 
+/*
+  Files with api endpoints
+  useOptimalRoute
+  DisplayRoute
+  mpaOptionsActions
+  customerDataActions
+*/
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
