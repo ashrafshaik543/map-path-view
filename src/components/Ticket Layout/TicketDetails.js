@@ -13,16 +13,15 @@ import {
   assignTicketToTechnician,
   unAssignTechnicianByTicketId,
 } from "../../store/store-slice/technicianDataSlice";
-import { useEffect } from "react";
 
 const TicketDetails = ({ index, ticket }) => {
   const ticketData = useSelector((state) => state.ticketData);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(ticketData.tickets[index]);
-    console.log(index);
-  });
+  // useEffect(() => {
+  //   console.log(ticketData.tickets[index]);
+  //   console.log(index);
+  // });
   return (
     <ListGroup.Item className="d-flex flex-row justify-content-between">
       <div className="d-flex flex-column d-inline mb-0 justify-content-between">
@@ -32,7 +31,7 @@ const TicketDetails = ({ index, ticket }) => {
           </p>
         </div>
         <Form.Check // prettier-ignore
-          defaultChecked={ticketData.tickets[index].selected}
+          checked={ticketData.tickets[index].selected}
           onChange={(e) => {
             //checkbox to or not to assign a technician
             console.log(e.target.checked);

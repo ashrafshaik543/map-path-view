@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import Form from "react-bootstrap/Form";
+import { MAP_BOX_KEY } from "../constants";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./app.css";
@@ -12,8 +13,7 @@ import useOptimalRoute from "./custom-hooks/useOptimalRoute";
 import { setRouteCoordinates } from "../store/store-actions/mapOptionsActions";
 import { Button } from "react-bootstrap";
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg";
+mapboxgl.accessToken = MAP_BOX_KEY;
 
 const DisplayRoutes = () => {
   //implementing empty div to add map
@@ -23,7 +23,7 @@ const DisplayRoutes = () => {
   const customerAddressData = useSelector((state) => state.customerAddressData);
   const mapOptions = useSelector((state) => state.mapOptions);
   //retrieving geocodes of added or existing tickets
-  const ticketgeocodes = useTicketGeocode(ticketData, customerAddressData);
+  const { ticketgeocodes } = useTicketGeocode(ticketData, customerAddressData);
   //select which technician routes to view on map
   const [selectedTechnician, setSelectedTechnician] = useState("one");
   const techicianData = useSelector((state) => state.technicianData);

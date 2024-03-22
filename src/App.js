@@ -43,9 +43,16 @@ function App() {
           onClick={() => {
             navigate("/route");
           }}
-          className="">
+          className="mx-2">
           Get optimal route
         </Button>
+        {/* <Button
+          onClick={() => {
+            navigate("/select-tickets");
+          }}
+          className="mx-2">
+          Select Tickets
+        </Button> */}
       </div>
     </Container>
   );

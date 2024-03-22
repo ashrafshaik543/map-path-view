@@ -53,7 +53,7 @@ const technicianDataSlice = createSlice({
       state = tempState;
     },
     unAssignTechnicianByTicketId(state, action) {
-      console.log(action.payload.ticketId);
+      // console.log(action.payload.ticketId);
       let technician = null;
       let index = null;
       let tempState = { ...state };
@@ -74,9 +74,34 @@ const technicianDataSlice = createSlice({
       if (technician) tempState[technician].splice(index, 1);
       state = { ...tempState };
     },
+    assignMultipleTicketsToTechnician(state, action) {
+      let tempState = { ...state };
+
+      action.payload.assignedTicketIds.forEach((ticketId) => {
+        let technician = null;
+        let index = null;
+        for (const tech in tempState) {
+          if (tech === "technicianGeocodes") break;
+          if ([...tempState[tech]].findIndex((id) => id === ticketId) !== -1) {
+            technician = `${tech}`;
+            index = [...tempState[tech]].findIndex((id) => id === ticketId);
+            break;
+          }
+        }
+        if (technician) tempState[technician].splice(index, 1);
+      });
+
+      tempState[action.payload.technician].push(
+        ...action.payload.assignedTicketIds
+      );
+      state = { ...tempState };
+    },
   },
 });
 
-export const { assignTicketToTechnician, unAssignTechnicianByTicketId } =
-  technicianDataSlice.actions;
+export const {
+  assignTicketToTechnician,
+  unAssignTechnicianByTicketId,
+  assignMultipleTicketsToTechnician,
+} = technicianDataSlice.actions;
 export default technicianDataSlice.reducer;

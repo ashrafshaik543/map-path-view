@@ -1,4 +1,5 @@
 import { updateRouteCoordinates } from "../store-slice/mapOptionsSlice";
+import { MAP_BOX_KEY } from "../../constants";
 
 export const setRouteCoordinates = (geocodesToVisit) => {
   return async (dispatch) => {
@@ -22,7 +23,7 @@ export const setRouteCoordinates = (geocodesToVisit) => {
     );
     console.log(searchCoordinates);
     const result = await fetch(
-      `https://api.mapbox.com/directions/v5/mapbox/driving/${searchCoordinates}?alternatives=true&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg`
+      `https://api.mapbox.com/directions/v5/mapbox/driving/${searchCoordinates}?alternatives=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${MAP_BOX_KEY}`
     );
 
     const data = await result.json();

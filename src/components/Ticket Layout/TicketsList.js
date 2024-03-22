@@ -1,7 +1,7 @@
 import ListGroup from "react-bootstrap/ListGroup";
 import { useSelector } from "react-redux";
 import TicketDetails from "./TicketDetails";
-import classes from "./TIcketsList.module.css";
+import classes from "./TicketsList.module.css";
 
 const TicketsList = () => {
   const ticketData = useSelector((state) => state.ticketData);

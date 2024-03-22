@@ -42,6 +42,16 @@ const ticketDataSlice = createSlice({
     unassignTechnician(state, action) {
       delete state.tickets[action.payload.index].technician;
     },
+    assignTechnicianToTickets(state, action) {
+      let tempState = { ...state };
+      tempState.tickets.forEach((ticket, i) => {
+        if (action.payload.assignedTicketIds.includes(ticket.id)) {
+          tempState.tickets[i].selected = true;
+          tempState.tickets[i].technician = action.payload.technician;
+        }
+      });
+      state = { ...tempState };
+    },
   },
 });
 
@@ -57,6 +67,7 @@ export const {
   decreaseCounter,
   assignTechnician,
   unassignTechnician,
+  assignTechnicianToTickets,
 } = ticketDataSlice.actions;
 
 export default ticketDataSlice.reducer;

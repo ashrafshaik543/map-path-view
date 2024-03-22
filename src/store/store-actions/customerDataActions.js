@@ -1,6 +1,7 @@
 import { updateCustomersArray } from "../store-slice/customerDataSlice";
 import { updateAddressDetailsArray } from "../store-slice/customerAddressDataSlice";
 //pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg
+import { MAP_BOX_KEY } from "../../constants";
 
 export const setCustomerData = () => {
   const customerNames = [
@@ -31,7 +32,7 @@ export const setCustomerData = () => {
     const getGeocode = async (address) => {
       //retieving geocode data from address value through mapbox API
       const res = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?proximity=ip&access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkI0c6KaAhJfk9bWg`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?proximity=ip&access_token=${MAP_BOX_KEY}`
       );
       const data = await res.json();
       let geocode = [

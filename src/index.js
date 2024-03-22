@@ -15,6 +15,10 @@ const router = createBrowserRouter([
     path: "/route",
     element: <DisplayRoutes />,
   },
+  // {
+  //   path: "/select-tickets",
+  //   element: <SelectTickets />,
+  // },
   {
     path: "/",
     element: <App />,
